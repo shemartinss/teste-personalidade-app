@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { motion } from "framer-motion";
 import Confetti from "react-confetti";
@@ -8,19 +8,46 @@ import useWindowSize from "react-use/lib/useWindowSize";
 
 export default function FinishPage() {
   const { width, height } = useWindowSize();
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
-  // Limpar respostas ao carregar a página de finalização
   useEffect(() => {
     try {
       localStorage.removeItem("bigFiveAnswers");
     } catch (e) {
       console.error("Erro ao limpar localStorage:", e);
     }
+
+    const leadId = localStorage.getItem("leadId");
+    if (!leadId) {
+      setStatus("error");
+      console.error("leadId não encontrado no localStorage.");
+      return;
+    }
+
+    const sendReport = async () => {
+      setStatus("sending");
+
+      try {
+        const res = await fetch("/api/send-report", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ leadId }),
+        });
+
+        if (!res.ok) throw new Error("Erro na requisição");
+
+        setStatus("success");
+      } catch (error) {
+        console.error("Erro ao enviar o relatório:", error);
+        setStatus("error");
+      }
+    };
+
+    sendReport();
   }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-background text-foreground transition-colors duration-300">
-      {/* Efeito de confete */}
       <Confetti
         width={width}
         height={height}
@@ -29,12 +56,10 @@ export default function FinishPage() {
         tweenDuration={10000}
       />
 
-      {/* Botão de modo claro/escuro */}
       <div className="absolute top-4 right-4">
         <ModeToggle />
       </div>
 
-      {/* Bloco principal com mensagem de parabéns */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -46,13 +71,26 @@ export default function FinishPage() {
           Você completou o teste de personalidade!
         </p>
         <p className="text-muted-foreground">
-          Seu relatório personalizado está sendo preparado e será enviado para o
-          seu e-mail em breve. Fique de olho na sua caixa de entrada (e na pasta
-          de spam, por via das dúvidas!).
+          Seu relatório está sendo preparado e será enviado para o seu e-mail em instantes.
         </p>
+
+        {status === "sending" && (
+          <p className="text-sm text-muted-foreground">
+            Enviando relatório por e-mail...
+          </p>
+        )}
+        {status === "success" && (
+          <p className="text-sm text-green-600">
+            ✅ Relatório enviado com sucesso!
+          </p>
+        )}
+        {status === "error" && (
+          <p className="text-sm text-red-600">
+            ❌ Erro ao enviar o relatório. Verifique seu e-mail ou tente mais tarde.
+          </p>
+        )}
       </motion.div>
 
-      {/* Rodapé */}
       <footer className="mt-8 text-center text-xs text-muted-foreground z-10">
         © {new Date().getFullYear()} Sheila Martins. Todos os direitos reservados.
       </footer>
