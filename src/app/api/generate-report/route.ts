@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient"; // Adjust path as needed
-import { calculateDomainScores } from "@/lib/scoreCalculator"; // Adjust path as needed
-import { syncActiveCampaignContact } from "@/lib/activeCampaignClient"; // Import AC client
-import { sendReportEmail } from "@/lib/postmarkClient"; // Import Postmark client
+import { supabase } from "@/lib/supabaseClient";
+import { calculateDomainScores } from "@/lib/scoreCalculator";
+import { syncActiveCampaignContact } from "@/lib/activeCampaignClient";
+import { sendReportEmail } from "@/lib/postmarkClient";
 import { exec } from "child_process";
 import path from "path";
-import fs from "fs/promises"; // Use promises version for async operations
+import fs from "fs/promises";
 import { promisify } from "util";
 
 const execPromise = promisify(exec);
 
-// Define types for clarity
 interface Answer {
   question_id: string;
   score: number;
@@ -27,10 +26,10 @@ interface Lead {
   phone?: string;
 }
 
-const FROM_EMAIL = "contato@sheilamartins.com"; // Sender email verified in Postmark
+const FROM_EMAIL = "contato@sheilamartins.com";
 
 export async function POST(req: NextRequest) {
-  let outputPdfPath: string | null = null; // Keep track of PDF path for cleanup
+  let outputPdfPath: string | null = null;
 
   try {
     const { leadId } = await req.json();
@@ -42,7 +41,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1. Fetch lead details and answers from Supabase
     const { data: leadData, error: leadError } = await supabase
       .from("leads")
       .select("id, name, email, phone")
@@ -57,7 +55,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // --- Sync Contact with ActiveCampaign --- START ---
     try {
       console.log(
         `Attempting to sync contact ${leadData.email} to ActiveCampaign...`
@@ -77,7 +74,6 @@ export async function POST(req: NextRequest) {
         acError.message
       );
     }
-    // --- Sync Contact with ActiveCampaign --- END ---
 
     const { data: answersData, error: answersError } = await supabase
       .from("answers")
@@ -94,22 +90,18 @@ export async function POST(req: NextRequest) {
 
     if (answersData.length < 120) {
       console.warn(`Lead ${leadId} has only ${answersData.length} answers.`);
-      // Potentially return error for incomplete test
     }
 
-    // 2. Calculate domain scores
     const scores = calculateDomainScores(answersData as Answer[]);
 
-    // 3. Prepare paths and arguments for Python script
     const templatePath = path.resolve(
       process.cwd(),
       "src/lib/report_template.html"
     );
     const tempDir = "/tmp";
     const uniqueFilename = `report_${leadId}_${Date.now()}.pdf`;
-    outputPdfPath = path.join(tempDir, uniqueFilename); // Assign to outer scope variable
+    outputPdfPath = path.join(tempDir, uniqueFilename);
 
-    // Ensure the template file exists
     try {
       await fs.access(templatePath);
     } catch {
@@ -133,7 +125,6 @@ export async function POST(req: NextRequest) {
 
     console.log(`Executing command: ${command}`);
 
-    // 4. Execute the Python script to generate PDF
     try {
       const { stdout, stderr } = await execPromise(command);
       console.log("Python script stdout:", stdout);
@@ -152,7 +143,7 @@ export async function POST(req: NextRequest) {
           );
         }
       }
-      await fs.access(outputPdfPath); // Verify file exists after execution
+      await fs.access(outputPdfPath);
       console.log(`PDF generated successfully at ${outputPdfPath}`);
     } catch (error: any) {
       console.error("Error executing Python script:", error);
@@ -162,7 +153,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 5. Send Email via Postmark with PDF attachment
     try {
       const emailTemplatePath = path.resolve(
         process.cwd(),
@@ -170,7 +160,6 @@ export async function POST(req: NextRequest) {
       );
       let htmlBody = await fs.readFile(emailTemplatePath, "utf-8");
 
-      // Replace placeholders
       htmlBody = htmlBody.replace(
         /{{ NOME_DO_USUARIO }}/g,
         leadData.name || "Usuário"
@@ -191,12 +180,8 @@ export async function POST(req: NextRequest) {
       console.log(`Successfully initiated email sending to ${leadData.email}`);
     } catch (emailError: any) {
       console.error("Error sending email via Postmark:", emailError);
-      // Decide if this should be a fatal error for the API call
-      // For now, let's return success but log the email error
-      // return NextResponse.json({ error: 'Failed to send report email.', details: emailError.message }, { status: 500 });
     }
 
-    // Return success response
     return NextResponse.json(
       {
         message:
@@ -205,13 +190,15 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
-    console.error("API Error:", error);
+    console.error("🚨 API Error Detalhado:", error);
     return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
+      {
+        error: "Internal Server Error",
+        details: error?.stack || error?.message || String(error),
+      },
       { status: 500 }
     );
   } finally {
-    // 6. Clean up the temporary PDF file
     if (outputPdfPath) {
       try {
         await fs.unlink(outputPdfPath);
