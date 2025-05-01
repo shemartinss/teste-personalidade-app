@@ -28,7 +28,7 @@ export default function FinishPage() {
       setStatus("sending");
 
       try {
-        const res = await fetch("/api/send-report", {
+        const res = await fetch("/api/generate-report", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ leadId }),
