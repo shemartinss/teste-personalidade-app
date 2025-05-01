@@ -1,5 +1,3 @@
-// 📁 Arquivo: src/app/api/generate-report/route.ts (versão sem Python, 100% compatível com Vercel)
-
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 import { calculateDomainScores } from "@/lib/scoreCalculator";
