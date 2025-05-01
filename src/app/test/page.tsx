@@ -32,7 +32,7 @@ export default function TestPage() {
   const router = useRouter();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string | null)[]>([]);
+  const [selectedValues, setSelectedValues] = useState<(string | null)[]>([]);
   const handleRadioChange = (value: string) => {
   const updated = [...selectedValues];
   updated[currentQuestionIndex] = value;
