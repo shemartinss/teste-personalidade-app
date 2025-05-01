@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seu Relatório Big Five Chegou!</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #a0522d; /* Sienna - matching PDF */
+        font-size: 1.8em;
+        text-align: center;
+        margin-bottom: 1em;
+      }
+      p {
+        margin-bottom: 1em;
+      }
+      .footer {
+        margin-top: 2em;
+        text-align: center;
+        font-size: 0.9em;
+        color: #777;
+      }
+      a {
+        color: #a0522d;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Seu Relatório de Personalidade Big Five</h1>
+      <p>Olá {{ NOME_DO_USUARIO }},</p>
+      <p>Obrigado por fazer o teste de personalidade Big Five!</p>
+      <p>
+        Anexado a este e-mail, você encontrará seu relatório personalizado em
+        formato PDF. Esperamos que ele ofereça insights valiosos para sua
+        jornada de autoconhecimento.
+      </p>
+      <p>
+        Se tiver alguma dúvida ou quiser explorar mais sobre sua personalidade,
+        sinta-se à vontade para entrar em contato.
+      </p>
+      <p>Atenciosamente,</p>
+      <p>Sheila Martins</p>
+
+      <div class="footer">
+        <p>Você recebeu este e-mail porque completou o teste em nosso site.</p>
+        <p>© {{ ANO_ATUAL }} Sheila Martins. Todos os direitos reservados.</p>
+        <!-- Add link to your website or social media if desired -->
+      </div>
+    </div>
+  </body>
+</html>

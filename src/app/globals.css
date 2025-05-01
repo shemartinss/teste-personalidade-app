@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Poppins font */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+body {
+  /* Set Poppins as the default font */
+  font-family: "Poppins", sans-serif;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+
+    /* Light Mode - Earthy/Boho Chic Palette */
+    --background: 30 50% 98%; /* Creamy White */
+    --foreground: 30 15% 20%; /* Dark Brown/Charcoal */
+    --card: 30 40% 95%; /* Lighter Cream */
+    --card-foreground: 30 15% 20%;
+    --popover: 30 50% 98%;
+    --popover-foreground: 30 15% 20%;
+    --primary: 25 70% 50%; /* Terracotta */
+    --primary-foreground: 30 50% 98%; /* Creamy White */
+    --secondary: 80 25% 85%; /* Light Olive Green */
+    --secondary-foreground: 80 25% 30%; /* Dark Olive */
+    --muted: 30 30% 90%; /* Light Tan */
+    --muted-foreground: 30 15% 45%; /* Medium Brown */
+    --accent: 45 60% 80%; /* Light Mustard Yellow */
+    --accent-foreground: 45 60% 30%; /* Dark Mustard */
+    --destructive: 0 70% 60%; /* Soft Red */
+    --destructive-foreground: 0 0% 100%;
+    --border: 30 30% 85%; /* Light Brown/Tan */
+    --input: 30 30% 88%; /* Slightly darker Tan for input */
+    --ring: 25 70% 50%; /* Terracotta for focus rings */
+
+    /* Sidebar colors (can be adjusted further if needed) */
+    --sidebar-background: 30 40% 92%;
+    --sidebar-foreground: 30 15% 25%;
+    --sidebar-primary: 25 70% 50%;
+    --sidebar-primary-foreground: 30 50% 98%;
+    --sidebar-accent: 30 30% 85%;
+    --sidebar-accent-foreground: 30 15% 20%;
+    --sidebar-border: 30 30% 80%;
+    --sidebar-ring: 25 70% 50%;
+
+    /* Chart colors (example, can be refined) */
+    --chart-1: 25 70% 60%;
+    --chart-2: 80 30% 50%;
+    --chart-3: 45 50% 55%;
+    --chart-4: 30 40% 70%;
+    --chart-5: 200 30% 60%;
+  }
+
+  .dark {
+    /* Dark Mode - Earthy/Boho Chic Palette */
+    --background: 30 15% 15%; /* Dark Brown/Deep Charcoal */
+    --foreground: 30 30% 90%; /* Light Beige/Off-white */
+    --card: 30 15% 20%; /* Slightly lighter dark */
+    --card-foreground: 30 30% 90%;
+    --popover: 30 15% 15%;
+    --popover-foreground: 30 30% 90%;
+    --primary: 25 70% 70%; /* Lighter Terracotta/Peach */
+    --primary-foreground: 30 15% 10%; /* Very Dark Brown */
+    --secondary: 80 25% 35%; /* Dark Olive */
+    --secondary-foreground: 80 25% 85%; /* Light Olive */
+    --muted: 30 10% 25%; /* Dark Gray/Brown */
+    --muted-foreground: 30 20% 65%; /* Muted Beige */
+    --accent: 45 60% 55%; /* Darker Gold */
+    --accent-foreground: 45 60% 95%; /* Very Light Gold */
+    --destructive: 0 60% 50%; /* Muted Dark Red */
+    --destructive-foreground: 0 0% 100%;
+    --border: 30 10% 30%; /* Dark Gray/Brown */
+    --input: 30 10% 35%; /* Slightly lighter dark for input */
+    --ring: 25 70% 70%; /* Lighter Terracotta for focus rings */
+
+    /* Sidebar colors (dark) */
+    --sidebar-background: 30 15% 18%;
+    --sidebar-foreground: 30 30% 85%;
+    --sidebar-primary: 25 70% 70%;
+    --sidebar-primary-foreground: 30 15% 10%;
+    --sidebar-accent: 30 10% 30%;
+    --sidebar-accent-foreground: 30 30% 90%;
+    --sidebar-border: 30 10% 25%;
+    --sidebar-ring: 25 70% 70%;
+
+    /* Chart colors (dark - example) */
+    --chart-1: 25 70% 65%;
+    --chart-2: 80 30% 60%;
+    --chart-3: 45 50% 65%;
+    --chart-4: 30 40% 75%;
+    --chart-5: 200 30% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Apply Poppins font */
+    font-family: "Poppins", sans-serif;
+  }
+}

@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seu Relatório de Personalidade Big Five</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Playfair+Display:wght@400;700&display=swap");
+
+      body {
+        font-family: "Quicksand", sans-serif; /* Fonte arredondada sem serifa */
+        line-height: 1.6;
+        color: #4f4a45; /* Tom terroso escuro para texto */
+        background-color: #f8f4e1; /* Fundo creme/bege claro */
+        margin: 0;
+        padding: 40px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background-color: #ffffff; /* Fundo branco para conteúdo */
+        padding: 30px 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e0d8c0; /* Borda sutil em tom terroso */
+      }
+
+      h1,
+      h2 {
+        font-family:
+          "Playfair Display", serif; /* Fonte clássica com serifa para títulos */
+        color: #a0522d; /* Tom terroso (Sienna) para títulos */
+        margin-bottom: 0.5em;
+        border-bottom: 2px solid #d2b48c; /* Linha sutil (Tan) abaixo dos títulos */
+        padding-bottom: 0.3em;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 2.2em;
+        margin-bottom: 1em;
+      }
+
+      h2 {
+        font-size: 1.6em;
+        margin-top: 1.5em;
+      }
+
+      p {
+        margin-bottom: 1em;
+        text-align: justify;
+      }
+
+      .score-section {
+        margin-top: 2em;
+        padding: 20px;
+        background-color: #faf0e6; /* Fundo levemente terroso (Linen) */
+        border-radius: 6px;
+        border-left: 5px solid #a0522d; /* Destaque lateral */
+      }
+
+      .score-section h3 {
+        font-family: "Playfair Display", serif;
+        color: #8b4513; /* SaddleBrown */
+        margin-top: 0;
+        margin-bottom: 0.8em;
+        font-size: 1.3em;
+      }
+
+      .score-value {
+        font-weight: 600;
+        font-size: 1.1em;
+        color: #a0522d;
+      }
+
+      .interpretation {
+        margin-top: 0.5em;
+        font-size: 0.95em;
+        color: #6b4f4b; /* Tom terroso médio */
+      }
+
+      .footer {
+        margin-top: 3em;
+        text-align: center;
+        font-size: 0.85em;
+        color: #888;
+      }
+
+      /* Placeholder for score bar/visualization if added later */
+      .score-bar {
+        height: 10px;
+        background-color: #e0d8c0;
+        border-radius: 5px;
+        margin-top: 5px;
+        overflow: hidden;
+      }
+      .score-fill {
+        height: 100%;
+        background-color: #a0522d;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Seu Relatório de Personalidade Big Five</h1>
+
+      <p>Olá {{ NOME_DO_USUARIO }},</p>
+      <p>
+        Parabéns por completar o teste de personalidade Big Five! Este modelo é
+        uma ferramenta poderosa para o autoconhecimento, descrevendo a
+        personalidade humana através de cinco grandes dimensões. Compreender
+        seus traços pode iluminar seus padrões de pensamento, sentimento e
+        comportamento.
+      </p>
+      <p>
+        A seguir, você encontrará um resumo dos seus resultados em cada um dos
+        cinco domínios. Lembre-se que estes são indicativos gerais e a
+        personalidade é complexa e multifacetada. Use este relatório como um
+        ponto de partida para sua jornada de autodescoberta.
+      </p>
+
+      <!-- Neuroticism -->
+      <div class="score-section">
+        <h2>Neuroticismo (Estabilidade Emocional)</h2>
+        <p>
+          Este traço refere-se à tendência de experienciar emoções negativas
+          como ansiedade, raiva, tristeza e vulnerabilidade.
+        </p>
+        <p>
+          Seu score: <span class="score-value">{{ SCORE_N }}</span> (de 120)
+        </p>
+        <!-- Simple Interpretation Placeholder -->
+        <div class="interpretation">
+          <p>
+            <strong>Interpretação Simplificada:</strong> {{ INTERPRETACAO_N }}
+          </p>
+          <!-- Example: Scores mais altos sugerem maior sensibilidade a estresse e emoções negativas, enquanto scores mais baixos indicam maior calma e estabilidade emocional. -->
+        </div>
+      </div>
+
+      <!-- Extraversion -->
+      <div class="score-section">
+        <h2>Extroversão</h2>
+        <p>
+          Este traço descreve o nível de sociabilidade, assertividade, energia e
+          busca por excitação.
+        </p>
+        <p>
+          Seu score: <span class="score-value">{{ SCORE_E }}</span> (de 120)
+        </p>
+        <div class="interpretation">
+          <p>
+            <strong>Interpretação Simplificada:</strong> {{ INTERPRETACAO_E }}
+          </p>
+          <!-- Example: Scores altos indicam uma natureza mais extrovertida, sociável e enérgica. Scores baixos sugerem uma preferência por ambientes mais calmos e interações sociais menos intensas (introversão). -->
+        </div>
+      </div>
+
+      <!-- Openness -->
+      <div class="score-section">
+        <h2>Abertura à Experiência</h2>
+        <p>
+          Refere-se à curiosidade intelectual, imaginação, apreciação pela arte
+          e por novas ideias e experiências.
+        </p>
+        <p>
+          Seu score: <span class="score-value">{{ SCORE_O }}</span> (de 120)
+        </p>
+        <div class="interpretation">
+          <p>
+            <strong>Interpretação Simplificada:</strong> {{ INTERPRETACAO_O }}
+          </p>
+          <!-- Example: Scores altos indicam maior curiosidade, criatividade e abertura a novidades. Scores baixos sugerem uma abordagem mais convencional, prática e focada no familiar. -->
+        </div>
+      </div>
+
+      <!-- Agreeableness -->
+      <div class="score-section">
+        <h2>Amabilidade (Afabilidade)</h2>
+        <p>
+          Este traço mede a tendência a ser compassivo, cooperativo, confiante e
+          atencioso com os outros.
+        </p>
+        <p>
+          Seu score: <span class="score-value">{{ SCORE_A }}</span> (de 120)
+        </p>
+        <div class="interpretation">
+          <p>
+            <strong>Interpretação Simplificada:</strong> {{ INTERPRETACAO_A }}
+          </p>
+          <!-- Example: Scores altos indicam uma natureza mais cooperativa, empática e confiante. Scores baixos podem sugerir uma postura mais cética, competitiva ou assertiva nas relações. -->
+        </div>
+      </div>
+
+      <!-- Conscientiousness -->
+      <div class="score-section">
+        <h2>Conscienciosidade (Realização)</h2>
+        <p>
+          Descreve o nível de organização, responsabilidade, disciplina,
+          persistência e orientação para objetivos.
+        </p>
+        <p>
+          Seu score: <span class="score-value">{{ SCORE_C }}</span> (de 120)
+        </p>
+        <div class="interpretation">
+          <p>
+            <strong>Interpretação Simplificada:</strong> {{ INTERPRETACAO_C }}
+          </p>
+          <!-- Example: Scores altos indicam maior organização, disciplina e foco em metas. Scores baixos sugerem uma abordagem mais flexível, espontânea e menos estruturada. -->
+        </div>
+      </div>
+
+      <p class="footer">
+        Este é um relatório simplificado. Para uma análise mais profunda,
+        considere explorar materiais adicionais sobre o Big Five.
+        <br />
+        © {{ ANO_ATUAL }} Sheila Martins. Todos os direitos reservados.
+      </p>
+    </div>
+  </body>
+</html>
