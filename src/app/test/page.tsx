@@ -169,11 +169,12 @@ export default function TestPage() {
 
         {/* Likert Scale Options */}
         <RadioGroup
-          value={selectedValues[currentQuestionIndex] ?? undefined}
-          onValueChange={handleRadioChange}
-          className="grid grid-cols-1 sm:grid-cols-5 gap-2 sm:gap-4 pt-4"
-          disabled={loading || !leadId}
-        >
+  key={currentQuestion.id} // ← ISSO resolve!
+  value={selectedValues[currentQuestionIndex] ?? undefined}
+  onValueChange={handleRadioChange}
+  className="grid grid-cols-1 sm:grid-cols-5 gap-2 sm:gap-4 pt-4"
+  disabled={loading || !leadId}
+>
           {likertOptions.map((option) => (
             <div key={option.value} className="flex flex-col items-center space-y-2">
               <RadioGroupItem
