@@ -32,7 +32,12 @@ export default function TestPage() {
   const router = useRouter();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [selectedValue, setSelectedValue] = useState<string | null)[]>([]);
+  const handleRadioChange = (value: string) => {
+  const updated = [...selectedValues];
+  updated[currentQuestionIndex] = value;
+  setSelectedValues(updated);
+};
   const [loading, setLoading] = useState(false);
   const [leadId, setLeadId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null); // For displaying errors
@@ -184,11 +189,10 @@ export default function TestPage() {
 
         {/* Likert Scale Options */}
         <RadioGroup
-          value={selectedValue ?? undefined}
-          onValueChange={handleRadioChange}
-          className="grid grid-cols-1 sm:grid-cols-5 gap-2 sm:gap-4 pt-4"
-          disabled={loading || !leadId} // Disable if loading or leadId missing
-        >
+  value={selectedValues[currentQuestionIndex] ?? undefined}
+  onValueChange={handleRadioChange}
+  ...
+>
           {likertOptions.map((option) => (
             <div
               key={option.value}
