@@ -6,6 +6,7 @@ import {
   View,
   StyleSheet,
 } from "@react-pdf/renderer";
+import type { DomainScores } from "@/lib/scoreCalculator";
 
 const styles = StyleSheet.create({
   page: {
@@ -45,11 +46,11 @@ const styles = StyleSheet.create({
 
 interface BigFiveReportProps {
   name: string;
-  scores: Record<string, string>;
+  scores: DomainScores;
 }
 
 const getDomainName = (domain: string): string => {
-  const map = {
+  const map: Record<string, string> = {
     N: "Neuroticismo",
     E: "Extroversão",
     O: "Abertura à Experiência",
@@ -92,15 +93,16 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
       {/* Capítulo 2 – Perfil personalizado */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 2 – Seu Perfil Personalizado</Text>
-        {Object.entries(scores).map(([domain, rawScore]) => (
-          <View key={domain} style={styles.section}>
-            <Text style={styles.heading}>
-              {getDomainName(domain)} ({domain})
-            </Text>
-            <Text style={styles.score}>Respostas: {rawScore}</Text>
-            <Text>{interpretations[domain]}</Text>
-          </View>
-        ))}
+        {scores &&
+          Object.entries(scores).map(([domain, rawScore]) => (
+            <View key={domain} style={styles.section}>
+              <Text style={styles.heading}>
+                {getDomainName(domain)} ({domain})
+              </Text>
+              <Text style={styles.score}>Respostas: {rawScore}</Text>
+              <Text>{interpretations[domain]}</Text>
+            </View>
+          ))}
       </Page>
 
       {/* Capítulo 3 – Carreira */}
@@ -218,4 +220,3 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
     </Document>
   );
 };
-
