@@ -1,3 +1,5 @@
+// 📁 Arquivo: src/components/BigFiveReport.tsx
+
 import React from "react";
 import {
   Document,
@@ -7,7 +9,6 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 
-// Estilos do PDF
 const styles = StyleSheet.create({
   page: {
     padding: 40,
@@ -20,21 +21,26 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: "center",
     marginBottom: 20,
-    color: "#8B4513", // marrom-terra
+    color: "#8B4513",
+  },
+  subtitle: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 10,
+    color: "#555",
   },
   section: {
     marginBottom: 16,
-    paddingBottom: 8,
-    borderBottom: "1px solid #ccc",
   },
   heading: {
-    fontSize: 16,
-    marginBottom: 4,
-    color: "#444",
-  },
-  score: {
     fontSize: 14,
-    marginBottom: 4,
+    marginBottom: 8,
+    color: "#222",
+    fontWeight: 600,
+  },
+  paragraph: {
+    marginBottom: 8,
+    textAlign: "justify",
   },
   footer: {
     marginTop: 40,
@@ -46,53 +52,48 @@ const styles = StyleSheet.create({
 
 interface BigFiveReportProps {
   name: string;
-  scores: Record<string, string>; // Exemplo: { N: "034...", E: "023..." }
+  scores: Record<string, string>; // Ex: { N: "034...", E: "032..." }
 }
 
-// Map para nome completo dos domínios
-const getDomainName = (domain: string): string => {
-  const map = {
-    N: "Neuroticismo",
-    E: "Extroversão",
-    O: "Abertura à Experiência",
-    A: "Agradabilidade",
-    C: "Conscienciosidade",
-  };
-  return map[domain] || domain;
-};
-
-// Breve interpretação de cada dimensão
-const interpretations: Record<string, string> = {
-  N: "Representa sua estabilidade emocional e nível de reatividade.",
-  E: "Mostra seu nível de energia, sociabilidade e entusiasmo.",
-  O: "Indica criatividade, imaginação e interesse por novas ideias.",
-  A: "Refere-se à empatia, gentileza e confiança nos outros.",
-  C: "Representa sua disciplina, organização e persistência.",
-};
-
 export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
+  const currentDate = new Date().toLocaleDateString();
+
   return (
     <Document>
+      {/* Capa */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Relatório de Personalidade Big Five</Text>
+        <Text style={styles.subtitle}>Nome: {name}</Text>
+        <Text style={styles.subtitle}>Data: {currentDate}</Text>
+      </Page>
+
+      {/* Capítulo 1 - Introdução ao Big Five */}
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.title}>Capítulo 1: Introdução ao Big Five</Text>
 
         <View style={styles.section}>
-          <Text>Nome: {name}</Text>
-          <Text>Data: {new Date().toLocaleDateString()}</Text>
+          <Text style={styles.heading}>O que é o Big Five e por que ele importa</Text>
+          <Text style={styles.paragraph}>
+            O modelo Big Five de personalidade é uma das teorias mais validadas cientificamente para compreender o comportamento humano. Ele avalia cinco grandes domínios: Neuroticismo, Extroversão, Abertura à Experiência, Agradabilidade e Conscienciosidade. Cada um deles influencia de forma significativa a forma como você pensa, sente e age.
+          </Text>
         </View>
 
-        {Object.entries(scores).map(([domain, rawScore]) => (
-          <View key={domain} style={styles.section}>
-            <Text style={styles.heading}>
-              {getDomainName(domain)} ({domain})
-            </Text>
-            <Text style={styles.score}>Respostas: {rawScore}</Text>
-            <Text>{interpretations[domain]}</Text>
-          </View>
-        ))}
+        <View style={styles.section}>
+          <Text style={styles.heading}>Como interpretar seus resultados</Text>
+          <Text style={styles.paragraph}>
+            Este relatório apresenta suas pontuações em cada um dos cinco traços principais. Ao longo das próximas páginas, você descobrirá como essas características influenciam suas escolhas, relações, desempenho profissional e bem-estar. Os dados aqui apresentados foram organizados para ajudar você a tomar decisões mais alinhadas com sua essência.
+          </Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.heading}>O Big Five e o potencial inexplorado das mulheres</Text>
+          <Text style={styles.paragraph}>
+            Mulheres têm, historicamente, enfrentado desafios ao expressar seus talentos autêuticos no mercado e na vida pessoal. Compreender seus traços de personalidade é um passo essencial para se posicionar com mais clareza, definir limites com mais firmeza e acessar uma liderança mais conectada com sua verdadeira natureza.
+          </Text>
+        </View>
 
         <Text style={styles.footer}>
-          © {new Date().getFullYear()} Sheila Martins — Todos os direitos reservados.
+          Sheila Martins | Relatório Big Five | Capítulo 1
         </Text>
       </Page>
     </Document>
