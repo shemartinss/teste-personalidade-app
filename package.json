@@ -1,78 +1,91 @@
-import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
-import { calculateDomainScores } from "@/lib/scoreCalculator";
-import { syncActiveCampaignContact } from "@/lib/activeCampaignClient";
-import { sendReportEmail } from "@/lib/postmarkClient";
-import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
-import { BigFiveReport } from "@/components/BigFiveReport"; // Novo componente React que vamos criar abaixo
-import fs from "fs/promises";
-import path from "path";
-
-const FROM_EMAIL = "contato@sheilamartins.com";
-
-export async function POST(req: NextRequest) {
-  try {
-    const { leadId } = await req.json();
-    if (!leadId) {
-      return NextResponse.json({ error: "Lead ID is required" }, { status: 400 });
-    }
-
-    const { data: leadData, error: leadError } = await supabase
-      .from("leads")
-      .select("id, name, email, phone")
-      .eq("id", leadId)
-      .single();
-
-    if (leadError || !leadData) {
-      return NextResponse.json({ error: "Lead not found" }, { status: 404 });
-    }
-
-    const { data: answersData, error: answersError } = await supabase
-      .from("answers")
-      .select("*")
-      .eq("lead_id", leadId);
-
-    if (answersError || !answersData || answersData.length < 120) {
-      return NextResponse.json({ error: "Respostas insuficientes ou erro ao buscar" }, { status: 400 });
-    }
-
-    const scores = calculateDomainScores(answersData);
-
-    // Gera o PDF usando o componente React
-    const pdfStream = await pdf(
-      <BigFiveReport name={leadData.name} scores={scores} />
-    ).toBuffer();
-
-    const templatePath = path.resolve(process.cwd(), "src/lib/email_body.html");
-    let htmlBody = await fs.readFile(templatePath, "utf-8");
-
-    htmlBody = htmlBody.replace(/{{ NOME_DO_USUARIO }}/g, leadData.name);
-    htmlBody = htmlBody.replace(/{{ ANO_ATUAL }}/g, new Date().getFullYear().toString());
-
-    await sendReportEmail({
-      to: leadData.email,
-      from: FROM_EMAIL,
-      subject: "Seu Relatório de Personalidade Big Five Chegou!",
-      htmlBody,
-      attachmentPath: "inline", // não usamos path, pois vamos mandar buffer
-      attachmentName: `Relatorio_BigFive_${leadData.name.replace(/\s+/g, "_")}.pdf`,
-      buffer: pdfStream, // <== PDF em memória
-    });
-
-    // Opcional: sincroniza com ActiveCampaign
-    try {
-      await syncActiveCampaignContact({
-        email: leadData.email,
-        firstName: leadData.name,
-        phone: leadData.phone,
-      });
-    } catch (error) {
-      console.error("Erro ao sincronizar com ActiveCampaign:", error);
-    }
-
-    return NextResponse.json({ message: "PDF gerado e enviado com sucesso" });
-  } catch (error: any) {
-    console.error("Erro na API:", error);
-    return NextResponse.json({ error: error.message || "Erro interno" }, { status: 500 });
-  }
+{
+  "name": "bigfive-leadmagnet",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [".", "worker"],
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "build:worker": "opennextjs-cloudflare",
+    "preview": "opennextjs-cloudflare && wrangler dev",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.10.0",
+    "@radix-ui/react-accordion": "^1.2.2",
+    "@radix-ui/react-alert-dialog": "^1.1.4",
+    "@radix-ui/react-aspect-ratio": "^1.1.1",
+    "@radix-ui/react-avatar": "^1.1.2",
+    "@radix-ui/react-checkbox": "^1.1.3",
+    "@radix-ui/react-collapsible": "^1.1.2",
+    "@radix-ui/react-context-menu": "^2.2.4",
+    "@radix-ui/react-dialog": "^1.1.4",
+    "@radix-ui/react-dropdown-menu": "^2.1.4",
+    "@radix-ui/react-hover-card": "^1.1.4",
+    "@radix-ui/react-label": "^2.1.1",
+    "@radix-ui/react-menubar": "^1.1.4",
+    "@radix-ui/react-navigation-menu": "^1.2.3",
+    "@radix-ui/react-popover": "^1.1.4",
+    "@radix-ui/react-progress": "^1.1.1",
+    "@radix-ui/react-radio-group": "^1.2.2",
+    "@radix-ui/react-scroll-area": "^1.2.2",
+    "@radix-ui/react-select": "^2.1.4",
+    "@radix-ui/react-separator": "^1.1.1",
+    "@radix-ui/react-slider": "^1.2.2",
+    "@radix-ui/react-slot": "^1.1.1",
+    "@radix-ui/react-switch": "^1.1.2",
+    "@radix-ui/react-tabs": "^1.1.2",
+    "@radix-ui/react-toast": "^1.2.4",
+    "@radix-ui/react-toggle": "^1.1.1",
+    "@radix-ui/react-toggle-group": "^1.1.1",
+    "@radix-ui/react-tooltip": "^1.1.6",
+    "@react-pdf/renderer": "^3.1.14",
+    "@supabase/supabase-js": "^2.49.4",
+    "caniuse-lite": "1.0.30001281",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "1.0.0",
+    "date-fns": "^4.1.0",
+    "embla-carousel-react": "^8.5.2",
+    "framer-motion": "^12.9.2",
+    "input-otp": "^1.4.2",
+    "lucide-react": "^0.364.0",
+    "next": "15.1.4",
+    "next-themes": "^0.4.6",
+    "node-fetch": "^3.3.2",
+    "postmark": "^4.0.5",
+    "react": "^19.0.0",
+    "react-confetti": "^6.4.0",
+    "react-day-picker": "8.10.1",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
+    "react-resizable-panels": "^2.1.7",
+    "react-use": "^17.6.0",
+    "recharts": "^2.12.4",
+    "sonner": "^1.7.2",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^1.1.2",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "@eslint/eslintrc": "^3",
+    "@opennextjs/cloudflare": "^0.3.8",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9.25.1",
+    "eslint-config-next": "^15.1.4",
+    "postcss": "^8",
+    "prettier": "^3.5.3",
+    "tailwindcss": "^3.4.1",
+    "turbo": "^2.3.3",
+    "typescript": "^5",
+    "wrangler": "^3.102.0"
+  },
+  "packageManager": "pnpm@10.0.0-rc.2+sha512.b6e59b96f90ca92449ac2f6dca9b430880448fc97d21f0fa9200e3d5ddb5289ad535255400554f7f3486e2d60058492161aaa9b58828e81f50c096718be9d156"
 }
