@@ -1,6 +1,4 @@
 import * as postmark from "postmark";
-import fs from "fs";
-import path from "path";
 
 const SERVER_TOKEN = process.env.POSTMARK_SERVER_TOKEN;
 
@@ -10,7 +8,6 @@ if (!SERVER_TOKEN) {
   );
 }
 
-// Initialize Postmark client
 const client = SERVER_TOKEN ? new postmark.ServerClient(SERVER_TOKEN) : null;
 
 interface EmailOptions {
@@ -19,10 +16,9 @@ interface EmailOptions {
   subject: string;
   htmlBody: string;
   attachmentName: string;
-  buffer: Buffer;
+  buffer: Buffer; // PDF em memória
 }
 
-// Function to send email with PDF attachment via Postmark
 export async function sendReportEmail(
   options: EmailOptions
 ): Promise<postmark.Models.MessageSendingResponse> {
@@ -31,12 +27,8 @@ export async function sendReportEmail(
   }
 
   try {
-    // Read the PDF file content
     const attachmentContent = options.buffer.toString("base64");
-    const attachmentName =
-      options.attachmentName || path.basename(options.attachmentPath);
 
-    // Send the email
     const response = await client.sendEmail({
       From: options.from,
       To: options.to,
@@ -44,24 +36,20 @@ export async function sendReportEmail(
       HtmlBody: options.htmlBody,
       Attachments: [
         {
-          Name: attachmentName,
+          Name: options.attachmentName,
           Content: attachmentContent,
           ContentType: "application/pdf",
         },
       ],
-      MessageStream: "outbound", // Or 'transactional' if you have specific streams configured
+      MessageStream: "outbound", // Ajuste conforme necessário no seu Postmark
     });
 
     console.log(
-      `Email sent successfully to ${options.to} via Postmark. MessageID: ${response.MessageID}`
+      `✅ Email enviado para ${options.to}. MessageID: ${response.MessageID}`
     );
     return response;
   } catch (error: any) {
-    console.error(`Error sending email via Postmark to ${options.to}:`, error);
-    // Postmark errors often have more details in error.response.data or similar
-    if (error.response && error.response.data) {
-      console.error("Postmark API Error Details:", error.response.data);
-    }
-    throw new Error(`Failed to send email via Postmark: ${error.message}`);
+    console.error(`❌ Erro ao enviar e-mail para ${options.to}:`, error);
+    throw new Error(`Erro ao enviar e-mail: ${error.message}`);
   }
 }
