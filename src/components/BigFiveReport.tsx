@@ -655,3 +655,30 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
     </Document>
   );
 };
+{/* Capítulo 6 – Potencializando Seus Pontos Fortes */}
+<View style={styles.section}>
+  <Text style={styles.heading}>Capítulo 6 – Potencializando Seus Pontos Fortes</Text>
+  <Text>
+    Todo perfil carrega consigo uma potência única. Identificar e usar seus talentos naturais é a chave para viver com mais autenticidade e realização.
+  </Text>
+  <Text style={styles.heading}>🦸‍♀️ Seus superpoderes baseados no Big Five:</Text>
+  <Text>
+    ● Conscienciosidade alta: você transforma visão em execução com disciplina e foco.{"\n"}
+    ● Abertura alta: sua mente fértil é fonte de inovação, sensibilidade artística e visão ampla.{"\n"}
+    ● Extroversão alta: você energiza ambientes e cria oportunidades onde há conexões.{"\n"}
+    ● Agradabilidade alta: seu coração acolhedor inspira confiança e colaboração.{"\n"}
+    ● Neuroticismo baixo: sua estabilidade emocional transmite segurança mesmo em tempos difíceis.
+  </Text>
+  <Text style={styles.heading}>🔍 Como posicionar suas forças:</Text>
+  <Text>
+    ● Torne visível seu diferencial: fale com orgulho das qualidades que te movem.{"\n"}
+    ● Crie rotinas que nutram suas forças diariamente.{"\n"}
+    ● Use sua linguagem de potência ao apresentar projetos, ideias ou defender seu ponto de vista.
+  </Text>
+  <Text style={styles.heading}>🌟 Situações onde você naturalmente brilha:</Text>
+  <Text>
+    ● Quando está em ambientes que reconhecem sua autenticidade.{"\n"}
+    ● Quando pode colocar seus talentos a serviço de um propósito.{"\n"}
+    ● Quando há espaço para ritmo próprio e autonomia na entrega.
+  </Text>
+</View>
