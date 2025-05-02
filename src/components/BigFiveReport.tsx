@@ -1,5 +1,3 @@
-// 📁 Arquivo: src/components/BigFiveReport.tsx
-
 import React from "react";
 import {
   Document,
@@ -358,8 +356,6 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
     <Text style={styles.listItem}>• {careerRecommendations.strategies[2]}</Text>
   </View>
 </Page>
-// 📁 Arquivo: src/components/BigFiveReport.tsx
-
 import React from "react";
 import {
   Document,
@@ -490,8 +486,6 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
     </Document>
   );
 };
-// 📁 Arquivo: src/components/BigFiveReport.tsx
-
 import React from "react";
 import {
   Document,
@@ -682,8 +676,6 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
     ● Quando há espaço para ritmo próprio e autonomia na entrega.
   </Text>
 </View>
-// 📁 Arquivo: src/components/BigFiveReport.tsx
-
 import React from "react";
 import {
   Document,
