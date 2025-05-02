@@ -23,10 +23,12 @@ const styles = StyleSheet.create({
     color: "#8B4513",
   },
   section: {
-    marginBottom: 16,
-    paddingBottom: 8,
-    borderBottom: "1px solid #ccc",
-  },
+  marginBottom: 16,
+  paddingBottom: 8,
+  borderBottomWidth: 1,
+  borderBottomColor: "#ccc",
+  borderBottomStyle: "solid",
+},
   heading: {
     fontSize: 16,
     marginBottom: 4,
