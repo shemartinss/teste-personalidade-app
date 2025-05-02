@@ -1,5 +1,3 @@
-// 📁 Arquivo: src/components/BigFiveReport.tsx
-
 import React from "react";
 import {
   Document,
