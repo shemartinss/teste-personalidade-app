@@ -26,6 +26,10 @@ export async function sendReportEmail(
     throw new Error("Postmark client is not initialized. Check Server Token.");
   }
 
+  if (!options.buffer || !(options.buffer instanceof Buffer)) {
+    throw new Error("O buffer do PDF está undefined ou inválido. Verifique a geração do PDF.");
+  }
+
   try {
     const attachmentContent = options.buffer.toString("base64");
 
