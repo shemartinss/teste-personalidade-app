@@ -295,3 +295,51 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
     </Document>
   );
 };
+<Page size="A4" style={styles.page}>
+  <Text style={styles.title}>Capítulo 8 – Exercícios e Próximos Passos</Text>
+
+  <View style={styles.section}>
+    <Text>
+      A jornada de autoconhecimento não termina com um relatório. Ela se aprofunda com a observação, a experiência e a experimentação consciente. Este último capítulo oferece práticas e recursos para te acompanhar nos próximos passos.
+    </Text>
+
+    <Text style={styles.heading}>📝 Exercício 1: Diário de Observação de Padrões</Text>
+    <Text>
+      Reserve 5 minutos ao final do seu dia para anotar situações marcantes. O que você sentiu? Qual traço seu estava ativo? O que funcionou bem? O que poderia ter sido diferente?
+    </Text>
+
+    <Text style={styles.heading}>🧪 Exercício 2: Experimento de Expansão</Text>
+    <Text>
+      Escolha uma área da vida onde você quer se desenvolver. Com base no seu traço menos dominante, proponha um pequeno desafio semanal. Ex: Para baixa extroversão, um café com uma nova pessoa.
+    </Text>
+
+    <Text style={styles.heading}>🔋 Exercício 3: Mapeamento de Energia</Text>
+    <Text>
+      Durante uma semana, anote em que momentos você se sente energizada e em quais se sente drenada. Relacione isso aos seus traços de personalidade e ajuste sua rotina de forma mais estratégica.
+    </Text>
+
+    <Text style={styles.heading}>📚 Recursos recomendados</Text>
+    <Text>
+      ● Livro: "Inteligência Emocional" – Daniel Goleman{'\n'}
+      ● Podcast: "Autoconsciente" com Regina Gianetti{'\n'}
+      ● Prática: Meditação guiada + journaling 10 min/dia
+    </Text>
+
+    <Text style={styles.heading}>📆 Plano de Desenvolvimento Pessoal (4 semanas)</Text>
+    <Text>
+      Semana 1: Diário de observação + análise dos gatilhos{'\n'}
+      Semana 2: Pequeno desafio de expansão semanal{'\n'}
+      Semana 3: Reflexão sobre comunicação e relacionamentos{'\n'}
+      Semana 4: Planejamento de rotina alinhada aos seus traços
+    </Text>
+
+    <Text style={styles.heading}>💌 Convite Final</Text>
+    <Text>
+      Espero que este material tenha ampliado sua compreensão sobre si mesma. Caso deseje aprofundar, conhecer seus subfatores e receber um plano 100% guiado, estou aqui para te acompanhar.
+    </Text>
+  </View>
+
+  <Text style={styles.footer}>
+    © {new Date().getFullYear()} Sheila Martins — Todos os direitos reservados.
+  </Text>
+</Page>
