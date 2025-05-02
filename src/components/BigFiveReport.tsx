@@ -23,12 +23,12 @@ const styles = StyleSheet.create({
     color: "#8B4513",
   },
   section: {
-  marginBottom: 16,
-  paddingBottom: 8,
-  borderBottomWidth: 1,
-  borderBottomColor: "#ccc",
-  borderBottomStyle: "solid",
-},
+    marginBottom: 16,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    borderBottomStyle: "solid",
+  },
   heading: {
     fontSize: 16,
     marginBottom: 4,
@@ -69,21 +69,17 @@ const interpretations: Record<string, string> = {
 
 export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
   const currentDate = new Date().toLocaleDateString();
-
-  const safeName = name ?? "Usuário";
-
+  const safeName = name || "Usuário";
   const domains = ["N", "E", "O", "A", "C"];
 
   return (
     <Document>
-      {/* Capa */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Relatório de Personalidade Big Five</Text>
         <Text style={styles.heading}>Nome: {safeName}</Text>
         <Text style={styles.heading}>Data: {currentDate}</Text>
       </Page>
 
-      {/* Capítulo 1 – Introdução */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 1 – Introdução ao Big Five</Text>
         <View style={styles.section}>
@@ -93,29 +89,24 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
         </View>
       </Page>
 
-      {/* Capítulo 2 – Perfil personalizado */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 2 – Seu Perfil Personalizado</Text>
         {domains.map((domain) => {
           const score = scores?.[domain as keyof DomainScores];
-          const label = domainLabels[domain];
-          const interpretation = interpretations[domain];
-
           if (typeof score !== "number") return null;
 
           return (
             <View key={domain} style={styles.section}>
               <Text style={styles.heading}>
-                {label} ({domain})
+                {domainLabels[domain]} ({domain})
               </Text>
               <Text style={styles.score}>Respostas: {score}</Text>
-              <Text>{interpretation}</Text>
+              <Text>{interpretations[domain]}</Text>
             </View>
           );
         })}
       </Page>
 
-      {/* Capítulos 3 a 8 permanecem os mesmos */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 3 – Sua Carreira</Text>
         <View style={styles.section}>
