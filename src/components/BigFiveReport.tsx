@@ -859,7 +859,31 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
             ● Quando há espaço para ritmo próprio e autonomia na entrega.
           </Text>
         </View>
-
+{/* Capítulo 7 – Trabalhando com Seus Desafios */}
+<View style={styles.section}>
+  <Text style={styles.heading}>Capítulo 7 – Trabalhando com Seus Desafios</Text>
+  <Text>
+    Cada traço traz aprendizados em potencial. Este capítulo é um convite para olhar com gentileza para seus padrões desafiadores e transformá-los em oportunidades de crescimento.
+  </Text>
+  <Text style={styles.heading}>🧩 Padrões limitantes a observar:</Text>
+  <Text>
+    ● Alto neuroticismo pode gerar interpretações negativas sobre si e os outros.{"\n"}
+    ● Baixa abertura pode limitar suas opções por medo do novo.{"\n"}
+    ● Agradabilidade baixa pode dificultar colaborações e gerar conflitos evitáveis.
+  </Text>
+  <Text style={styles.heading}>🛠️ Estratégias de desenvolvimento:</Text>
+  <Text>
+    ● Use o autoconhecimento como mapa: observe quais situações disparam seus padrões.{"\n"}
+    ● Pratique pausas conscientes antes de reagir.{"\n"}
+    ● Invista em feedback e ajuste de rota com apoio de mentores, pares ou terapeutas.
+  </Text>
+  <Text style={styles.heading}>💬 Reframings poderosos para o seu perfil:</Text>
+  <Text>
+    ● "Sensibilidade não é fraqueza, é antena."{"\n"}
+    ● "Organização é liberdade, não rigidez."{"\n"}
+    ● "Abertura é coragem em movimento."
+  </Text>
+</View>
         <Text style={styles.footer}>
           © {new Date().getFullYear()} Sheila Martins — Todos os direitos reservados.
         </Text>
