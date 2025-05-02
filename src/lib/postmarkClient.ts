@@ -32,9 +32,7 @@ export async function sendReportEmail(
 
   try {
     // Read the PDF file content
-    const attachmentContent = fs
-      .readFileSync(options.attachmentPath)
-      .toString("base64");
+    const attachmentContent = options.buffer.toString("base64");
     const attachmentName =
       options.attachmentName || path.basename(options.attachmentPath);
 
