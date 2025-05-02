@@ -68,16 +68,30 @@ const interpretations: Record<string, string> = {
 };
 
 export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
+  const currentDate = new Date().toLocaleDateString();
+
   return (
     <Document>
+      {/* Capa */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Relatório de Personalidade Big Five</Text>
+        <Text style={styles.heading}>Nome: {name}</Text>
+        <Text style={styles.heading}>Data: {currentDate}</Text>
+      </Page>
 
+      {/* Capítulo 1 – Introdução */}
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.title}>Capítulo 1 – Introdução ao Big Five</Text>
         <View style={styles.section}>
-          <Text>Nome: {name}</Text>
-          <Text>Data: {new Date().toLocaleDateString()}</Text>
+          <Text>
+            O modelo Big Five é a estrutura mais aceita pela psicologia moderna para compreender a personalidade. Este relatório mostrará como seus traços influenciam sua carreira, relacionamentos e bem-estar.
+          </Text>
         </View>
+      </Page>
 
+      {/* Capítulo 2 – Perfil personalizado */}
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.title}>Capítulo 2 – Seu Perfil Personalizado</Text>
         {Object.entries(scores).map(([domain, rawScore]) => (
           <View key={domain} style={styles.section}>
             <Text style={styles.heading}>
@@ -87,183 +101,51 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
             <Text>{interpretations[domain]}</Text>
           </View>
         ))}
-
-        {/* Capítulo 4 – Relacionamentos */}
-        <View style={styles.section}>
-          <Text style={styles.heading}>Capítulo 4 – Seu Perfil e Seus Relacionamentos</Text>
-          <Text>
-            Seu perfil de personalidade influencia diretamente a forma como você se conecta com as pessoas.
-            Este capítulo revela suas fortalezas, desafios e estratégias para relações mais saudáveis e significativas.
-          </Text>
-          <Text style={styles.heading}>💡 Pontos fortes relacionais:</Text>
-          <Text>
-            ● Pessoas com alta agradabilidade tendem a ser empáticas e confiáveis.
-            ● Um perfil extrovertido pode se destacar em construir redes sociais amplas.
-            ● Alta abertura favorece conexões profundas baseadas em ideias e valores.
-          </Text>
-          <Text style={styles.heading}>⚠️ Desafios comuns:</Text>
-          <Text>
-            ● Neuroticismo elevado pode gerar reações intensas a críticas ou conflitos.
-            ● Baixa extroversão pode dificultar o início de novas amizades.
-            ● Conscienciosidade excessiva pode levar a exigências rígidas nos relacionamentos.
-          </Text>
-          <Text style={styles.heading}>🔑 Estratégias para conexões mais profundas:</Text>
-          <Text>
-            ● Pratique escuta ativa e validação emocional, principalmente se você tem baixa agradabilidade.
-            ● Agende momentos de socialização mesmo que sua energia social seja limitada.
-            ● Permita-se vulnerabilidade: relações íntimas florescem com autenticidade.
-          </Text>
-          <Text style={styles.heading}>💬 Comunicação efetiva para o seu perfil:</Text>
-          <Text>
-            ● Se você tem alta extroversão, cuide para não dominar as conversas.
-            ● Se você é mais introvertido, planeje e ensaie mensagens importantes.
-            ● Use seu ponto forte — seja ele escuta, clareza ou empatia — como ferramenta principal.
-          </Text>
-        </View>
-
-        {/* Capítulo 5 – Bem-estar */}
-        <View style={styles.section}>
-          <Text style={styles.heading}>Capítulo 5 – Seu Perfil e Seu Bem-Estar</Text>
-          <Text>
-            Seu bem-estar emocional, mental e físico é diretamente influenciado por seus traços de personalidade.
-            Entender suas tendências naturais pode ajudar a manter seu equilíbrio e evitar o esgotamento.
-          </Text>
-          <Text style={styles.heading}>⚠️ Sinais de alerta para o seu perfil:</Text>
-          <Text>
-            ● Alto neuroticismo: risco de ansiedade, ruminação excessiva e baixa autoestima.
-            ● Baixa conscienciosidade: dificuldade para manter rotinas saudáveis e regular o sono.
-            ● Extroversão baixa: isolamento e perda de estímulos sociais importantes.
-          </Text>
-          <Text style={styles.heading}>✔️ Práticas de autocuidado recomendadas:</Text>
-          <Text>
-            ● Para neuroticismo: journaling, terapia cognitivo-comportamental, respiração consciente.
-            ● Para conscienciosidade: checklists simples, metas semanais, reforço positivo.
-            ● Para extroversão: grupos de apoio, aulas em grupo, atividades culturais.
-          </Text>
-          <Text style={styles.heading}>🌧️ Estratégias para gerenciar o estresse:</Text>
-          <Text>
-            ● Estabeleça limites claros com pessoas e tarefas.
-            ● Priorize atividades que recarregam sua energia, mesmo que pareçam pequenas.
-            ● Desenvolva uma prática de gratidão alinhada ao seu estilo pessoal.
-          </Text>
-          <Text style={styles.heading}>⏳ Rotinas diárias que apoiam seu equilíbrio:</Text>
-          <Text>
-            ● Comece o dia com uma intenção clara (para alta abertura, visualize; para alta C, escreva).
-            ● Reserve tempo para introspecção ou movimento, de acordo com sua energia.
-            ● Tenha espaço de recuperação após momentos intensos.
-          </Text>
-        </View>
-
-        {/* Capítulo 6 – Potencializando Seus Pontos Fortes */}
-        <View style={styles.section}>
-          <Text style={styles.heading}>Capítulo 6 – Potencializando Seus Pontos Fortes</Text>
-          <Text>
-            Todo perfil carrega consigo uma potência única. Identificar e usar seus talentos naturais é a chave para viver com mais autenticidade e realização.
-          </Text>
-          <Text style={styles.heading}>🦸‍♀️ Seus superpoderes baseados no Big Five:</Text>
-          <Text>
-            ● Conscienciosidade alta: você transforma visão em execução com disciplina e foco.{"\n"}
-            ● Abertura alta: sua mente fértil é fonte de inovação, sensibilidade artística e visão ampla.{"\n"}
-            ● Extroversão alta: você energiza ambientes e cria oportunidades onde há conexões.{"\n"}
-            ● Agradabilidade alta: seu coração acolhedor inspira confiança e colaboração.{"\n"}
-            ● Neuroticismo baixo: sua estabilidade emocional transmite segurança mesmo em tempos difíceis.
-          </Text>
-          <Text style={styles.heading}>🔍 Como posicionar suas forças:</Text>
-          <Text>
-            ● Torne visível seu diferencial: fale com orgulho das qualidades que te movem.{"\n"}
-            ● Crie rotinas que nutram suas forças diariamente.{"\n"}
-            ● Use sua linguagem de potência ao apresentar projetos, ideias ou defender seu ponto de vista.
-          </Text>
-          <Text style={styles.heading}>🌟 Situações onde você naturalmente brilha:</Text>
-          <Text>
-            ● Quando está em ambientes que reconhecem sua autenticidade.{"\n"}
-            ● Quando pode colocar seus talentos a serviço de um propósito.{"\n"}
-            ● Quando há espaço para ritmo próprio e autonomia na entrega.
-          </Text>
-        </View>
-
-        <Text style={styles.footer}>
-          © {new Date().getFullYear()} Sheila Martins — Todos os direitos reservados.
-        </Text>
       </Page>
-    </Document>
-  );
-};
-import React from "react";
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-} from "@react-pdf/renderer";
 
-const styles = StyleSheet.create({
-  page: {
-    padding: 40,
-    fontSize: 12,
-    fontFamily: "Helvetica",
-    lineHeight: 1.6,
-    color: "#333",
-  },
-  title: {
-    fontSize: 24,
-    textAlign: "center",
-    marginBottom: 20,
-    color: "#8B4513",
-  },
-  section: {
-    marginBottom: 16,
-    paddingBottom: 8,
-    borderBottom: "1px solid #ccc",
-  },
-  heading: {
-    fontSize: 16,
-    marginBottom: 4,
-    color: "#444",
-  },
-  score: {
-    fontSize: 14,
-    marginBottom: 4,
-  },
-  footer: {
-    marginTop: 40,
-    fontSize: 10,
-    textAlign: "center",
-    color: "#777",
-  },
-});
+      {/* Capítulo 3 – Carreira */}
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.title}>Capítulo 3 – Sua Carreira</Text>
+        <View style={styles.section}>
+          <Text>
+            Com base nos seus traços de personalidade, este capítulo apresenta os ambientes ideais, funções mais alinhadas e estratégias para prosperar profissionalmente.
+          </Text>
+        </View>
+      </Page>
 
-interface BigFiveReportProps {
-  name: string;
-  scores: Record<string, string>;
-}
+      {/* Capítulo 4 – Relacionamentos */}
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.title}>Capítulo 4 – Seus Relacionamentos</Text>
+        <View style={styles.section}>
+          <Text>
+            Como seu perfil influencia suas conexões com os outros. Fortalezas, desafios e estratégias de comunicação para relações saudáveis e profundas.
+          </Text>
+        </View>
+      </Page>
 
-const getDomainName = (domain: string): string => {
-  const map = {
-    N: "Neuroticismo",
-    E: "Extroversão",
-    O: "Abertura à Experiência",
-    A: "Agradabilidade",
-    C: "Conscienciosidade",
-  };
-  return map[domain] || domain;
-};
+      {/* Capítulo 5 – Bem-estar */}
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.title}>Capítulo 5 – Seu Bem-Estar</Text>
+        <View style={styles.section}>
+          <Text>
+            Entenda como suas características afetam seu equilíbrio emocional e físico. Descubra práticas personalizadas para seu autocuidado.
+          </Text>
+        </View>
+      </Page>
 
-const interpretations: Record<string, string> = {
-  N: "Representa sua estabilidade emocional e nível de reatividade.",
-  E: "Mostra seu nível de energia, sociabilidade e entusiasmo.",
-  O: "Indica criatividade, imaginação e interesse por novas ideias.",
-  A: "Refere-se à empatia, gentileza e confiança nos outros.",
-  C: "Representa sua disciplina, organização e persistência.",
-};
+      {/* Capítulo 6 – Pontos Fortes */}
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.title}>Capítulo 6 – Potencializando Seus Pontos Fortes</Text>
+        <View style={styles.section}>
+          <Text>
+            Identifique seus talentos naturais com base no seu perfil e descubra como posicioná-los de forma estratégica na vida pessoal e profissional.
+          </Text>
+        </View>
+      </Page>
 
-export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
-  return (
-    <Document>
+      {/* Capítulo 7 – Trabalhando com Desafios */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 7 – Trabalhando com Seus Desafios</Text>
-
         <View style={styles.section}>
           <Text>
             Cada traço traz aprendizados em potencial. Este capítulo é um convite para olhar com gentileza para seus padrões desafiadores e transformá-los em oportunidades de crescimento.
@@ -287,7 +169,48 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
             ● "Abertura é coragem em movimento."
           </Text>
         </View>
+        <Text style={styles.footer}>
+          © {new Date().getFullYear()} Sheila Martins — Todos os direitos reservados.
+        </Text>
+      </Page>
 
+      {/* Capítulo 8 – Exercícios e Próximos Passos */}
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.title}>Capítulo 8 – Exercícios e Próximos Passos</Text>
+        <View style={styles.section}>
+          <Text>
+            A jornada de autoconhecimento não termina com um relatório. Ela se aprofunda com a observação, a experiência e a experimentação consciente. Este último capítulo oferece práticas e recursos para te acompanhar nos próximos passos.
+          </Text>
+          <Text style={styles.heading}>📝 Exercício 1: Diário de Observação de Padrões</Text>
+          <Text>
+            Reserve 5 minutos ao final do seu dia para anotar situações marcantes. O que você sentiu? Qual traço seu estava ativo? O que funcionou bem? O que poderia ter sido diferente?
+          </Text>
+          <Text style={styles.heading}>🧪 Exercício 2: Experimento de Expansão</Text>
+          <Text>
+            Escolha uma área da vida onde você quer se desenvolver. Com base no seu traço menos dominante, proponha um pequeno desafio semanal. Ex: Para baixa extroversão, um café com uma nova pessoa.
+          </Text>
+          <Text style={styles.heading}>🔋 Exercício 3: Mapeamento de Energia</Text>
+          <Text>
+            Durante uma semana, anote em que momentos você se sente energizada e em quais se sente drenada. Relacione isso aos seus traços de personalidade e ajuste sua rotina de forma mais estratégica.
+          </Text>
+          <Text style={styles.heading}>📚 Recursos recomendados</Text>
+          <Text>
+            ● Livro: "Inteligência Emocional" – Daniel Goleman{"\n"}
+            ● Podcast: "Autoconsciente" com Regina Gianetti{"\n"}
+            ● Prática: Meditação guiada + journaling 10 min/dia
+          </Text>
+          <Text style={styles.heading}>📆 Plano de Desenvolvimento Pessoal (4 semanas)</Text>
+          <Text>
+            Semana 1: Diário de observação + análise dos gatilhos{"\n"}
+            Semana 2: Pequeno desafio de expansão semanal{"\n"}
+            Semana 3: Reflexão sobre comunicação e relacionamentos{"\n"}
+            Semana 4: Planejamento de rotina alinhada aos seus traços
+          </Text>
+          <Text style={styles.heading}>💌 Convite Final</Text>
+          <Text>
+            Espero que este material tenha ampliado sua compreensão sobre si mesma. Caso deseje aprofundar, conhecer seus subfatores e receber um plano 100% guiado, estou aqui para te acompanhar.
+          </Text>
+        </View>
         <Text style={styles.footer}>
           © {new Date().getFullYear()} Sheila Martins — Todos os direitos reservados.
         </Text>
@@ -295,51 +218,4 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
     </Document>
   );
 };
-<Page size="A4" style={styles.page}>
-  <Text style={styles.title}>Capítulo 8 – Exercícios e Próximos Passos</Text>
 
-  <View style={styles.section}>
-    <Text>
-      A jornada de autoconhecimento não termina com um relatório. Ela se aprofunda com a observação, a experiência e a experimentação consciente. Este último capítulo oferece práticas e recursos para te acompanhar nos próximos passos.
-    </Text>
-
-    <Text style={styles.heading}>📝 Exercício 1: Diário de Observação de Padrões</Text>
-    <Text>
-      Reserve 5 minutos ao final do seu dia para anotar situações marcantes. O que você sentiu? Qual traço seu estava ativo? O que funcionou bem? O que poderia ter sido diferente?
-    </Text>
-
-    <Text style={styles.heading}>🧪 Exercício 2: Experimento de Expansão</Text>
-    <Text>
-      Escolha uma área da vida onde você quer se desenvolver. Com base no seu traço menos dominante, proponha um pequeno desafio semanal. Ex: Para baixa extroversão, um café com uma nova pessoa.
-    </Text>
-
-    <Text style={styles.heading}>🔋 Exercício 3: Mapeamento de Energia</Text>
-    <Text>
-      Durante uma semana, anote em que momentos você se sente energizada e em quais se sente drenada. Relacione isso aos seus traços de personalidade e ajuste sua rotina de forma mais estratégica.
-    </Text>
-
-    <Text style={styles.heading}>📚 Recursos recomendados</Text>
-    <Text>
-      ● Livro: "Inteligência Emocional" – Daniel Goleman{'\n'}
-      ● Podcast: "Autoconsciente" com Regina Gianetti{'\n'}
-      ● Prática: Meditação guiada + journaling 10 min/dia
-    </Text>
-
-    <Text style={styles.heading}>📆 Plano de Desenvolvimento Pessoal (4 semanas)</Text>
-    <Text>
-      Semana 1: Diário de observação + análise dos gatilhos{'\n'}
-      Semana 2: Pequeno desafio de expansão semanal{'\n'}
-      Semana 3: Reflexão sobre comunicação e relacionamentos{'\n'}
-      Semana 4: Planejamento de rotina alinhada aos seus traços
-    </Text>
-
-    <Text style={styles.heading}>💌 Convite Final</Text>
-    <Text>
-      Espero que este material tenha ampliado sua compreensão sobre si mesma. Caso deseje aprofundar, conhecer seus subfatores e receber um plano 100% guiado, estou aqui para te acompanhar.
-    </Text>
-  </View>
-
-  <Text style={styles.footer}>
-    © {new Date().getFullYear()} Sheila Martins — Todos os direitos reservados.
-  </Text>
-</Page>
