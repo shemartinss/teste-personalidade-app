@@ -46,18 +46,15 @@ const styles = StyleSheet.create({
 
 interface BigFiveReportProps {
   name: string;
-  scores: DomainScores;
+  scores: Partial<DomainScores>;
 }
 
-const getDomainName = (domain: string): string => {
-  const map: Record<string, string> = {
-    N: "Neuroticismo",
-    E: "Extroversão",
-    O: "Abertura à Experiência",
-    A: "Agradabilidade",
-    C: "Conscienciosidade",
-  };
-  return map[domain] ?? `Domínio desconhecido (${domain})`;
+const domainLabels: Record<string, string> = {
+  N: "Neuroticismo",
+  E: "Extroversão",
+  O: "Abertura à Experiência",
+  A: "Agradabilidade",
+  C: "Conscienciosidade",
 };
 
 const interpretations: Record<string, string> = {
@@ -70,16 +67,21 @@ const interpretations: Record<string, string> = {
 
 export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
   const currentDate = new Date().toLocaleDateString();
-  const validDomains = ["N", "E", "O", "A", "C"];
+
+  const safeName = name ?? "Usuário";
+
+  const domains = ["N", "E", "O", "A", "C"];
 
   return (
     <Document>
+      {/* Capa */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Relatório de Personalidade Big Five</Text>
-        <Text style={styles.heading}>Nome: {name}</Text>
+        <Text style={styles.heading}>Nome: {safeName}</Text>
         <Text style={styles.heading}>Data: {currentDate}</Text>
       </Page>
 
+      {/* Capítulo 1 – Introdução */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 1 – Introdução ao Big Five</Text>
         <View style={styles.section}>
@@ -89,21 +91,29 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
         </View>
       </Page>
 
+      {/* Capítulo 2 – Perfil personalizado */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 2 – Seu Perfil Personalizado</Text>
-        {Object.entries(scores)
-          .filter(([domain]) => validDomains.includes(domain))
-          .map(([domain, rawScore]) => (
+        {domains.map((domain) => {
+          const score = scores?.[domain as keyof DomainScores];
+          const label = domainLabels[domain];
+          const interpretation = interpretations[domain];
+
+          if (typeof score !== "number") return null;
+
+          return (
             <View key={domain} style={styles.section}>
               <Text style={styles.heading}>
-                {getDomainName(domain)} ({domain})
+                {label} ({domain})
               </Text>
-              <Text style={styles.score}>Respostas: {rawScore}</Text>
-              <Text>{interpretations[domain] ?? "Interpretação indisponível para este traço."}</Text>
+              <Text style={styles.score}>Respostas: {score}</Text>
+              <Text>{interpretation}</Text>
             </View>
-          ))}
+          );
+        })}
       </Page>
 
+      {/* Capítulos 3 a 8 permanecem os mesmos */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 3 – Sua Carreira</Text>
         <View style={styles.section}>
