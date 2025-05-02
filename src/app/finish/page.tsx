@@ -28,6 +28,8 @@ export default function FinishPage() {
       setStatus("sending");
 
       try {
+        console.log("Enviando leadId para API:", leadId); // 👈 VERIFICAÇÃO
+
         const res = await fetch("/api/generate-report", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
