@@ -57,7 +57,7 @@ const getDomainName = (domain: string): string => {
     A: "Agradabilidade",
     C: "Conscienciosidade",
   };
-  return map[domain] || domain;
+  return map[domain] ?? `Domínio desconhecido (${domain})`;
 };
 
 const interpretations: Record<string, string> = {
@@ -70,17 +70,16 @@ const interpretations: Record<string, string> = {
 
 export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
   const currentDate = new Date().toLocaleDateString();
+  const validDomains = ["N", "E", "O", "A", "C"];
 
   return (
     <Document>
-      {/* Capa */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Relatório de Personalidade Big Five</Text>
         <Text style={styles.heading}>Nome: {name}</Text>
         <Text style={styles.heading}>Data: {currentDate}</Text>
       </Page>
 
-      {/* Capítulo 1 – Introdução */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 1 – Introdução ao Big Five</Text>
         <View style={styles.section}>
@@ -90,22 +89,21 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
         </View>
       </Page>
 
-      {/* Capítulo 2 – Perfil personalizado */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 2 – Seu Perfil Personalizado</Text>
-        {scores &&
-          Object.entries(scores).map(([domain, rawScore]) => (
+        {Object.entries(scores)
+          .filter(([domain]) => validDomains.includes(domain))
+          .map(([domain, rawScore]) => (
             <View key={domain} style={styles.section}>
               <Text style={styles.heading}>
                 {getDomainName(domain)} ({domain})
               </Text>
               <Text style={styles.score}>Respostas: {rawScore}</Text>
-              <Text>{interpretations[domain]}</Text>
+              <Text>{interpretations[domain] ?? "Interpretação indisponível para este traço."}</Text>
             </View>
           ))}
       </Page>
 
-      {/* Capítulo 3 – Carreira */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 3 – Sua Carreira</Text>
         <View style={styles.section}>
@@ -115,7 +113,6 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
         </View>
       </Page>
 
-      {/* Capítulo 4 – Relacionamentos */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 4 – Seus Relacionamentos</Text>
         <View style={styles.section}>
@@ -125,7 +122,6 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
         </View>
       </Page>
 
-      {/* Capítulo 5 – Bem-estar */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 5 – Seu Bem-Estar</Text>
         <View style={styles.section}>
@@ -135,7 +131,6 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
         </View>
       </Page>
 
-      {/* Capítulo 6 – Pontos Fortes */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 6 – Potencializando Seus Pontos Fortes</Text>
         <View style={styles.section}>
@@ -145,7 +140,6 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
         </View>
       </Page>
 
-      {/* Capítulo 7 – Trabalhando com Desafios */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 7 – Trabalhando com Seus Desafios</Text>
         <View style={styles.section}>
@@ -176,7 +170,6 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
         </Text>
       </Page>
 
-      {/* Capítulo 8 – Exercícios e Próximos Passos */}
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 8 – Exercícios e Próximos Passos</Text>
         <View style={styles.section}>
