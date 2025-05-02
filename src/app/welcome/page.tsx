@@ -31,7 +31,7 @@ export default function WelcomePage() {
           sobre sua personalidade única.
         </p>
         <p className="text-muted-foreground">
-          O teste a seguir contém 90 afirmações. Responda honestamente,
+          O teste a seguir contém 120 afirmações. Responda honestamente,
           indicando o quanto cada afirmação se aplica a você. Não há respostas
           certas ou erradas.
         </p>
