@@ -39,19 +39,29 @@ export async function POST(req: NextRequest) {
     }
 
     const scores = calculateDomainScores(answersData);
+
+    // 🔍 Logs de verificação de dados antes da renderização
+    console.log("✔️ Nome recebido:", leadData.name);
     console.log("✔️ Scores calculados:", scores);
+
+    if (!leadData.name) {
+      return NextResponse.json({ error: "Nome do lead está vazio ou inválido." }, { status: 400 });
+    }
+
+    if (!scores || Object.keys(scores).length === 0) {
+      return NextResponse.json({ error: "Scores inválidos ou ausentes." }, { status: 500 });
+    }
 
     let pdfStream;
     try {
-      pdfStream = await pdf(
-        React.createElement(BigFiveReport, {
-          name: leadData.name,
-          scores: scores,
-        })
-      ).toBuffer();
+      const element = React.createElement(BigFiveReport, {
+        name: leadData.name,
+        scores: scores,
+      });
+
+      pdfStream = await pdf(element).toBuffer();
 
       if (!pdfStream || !(pdfStream instanceof Buffer)) {
-        console.error("❌ PDF não gerado corretamente:", pdfStream);
         return NextResponse.json({ error: "Falha ao gerar o PDF." }, { status: 500 });
       }
 
@@ -92,7 +102,7 @@ export async function POST(req: NextRequest) {
       console.log("🔄 Sincronização com ActiveCampaign concluída.");
     } catch (syncError) {
       console.error("⚠️ Erro ao sincronizar com ActiveCampaign:", syncError);
-      // Não bloqueia o sucesso geral
+      // Não impede a resposta de sucesso
     }
 
     return NextResponse.json({ message: "PDF gerado e enviado com sucesso." });
