@@ -189,3 +189,109 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
     </Document>
   );
 };
+import React from "react";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+} from "@react-pdf/renderer";
+
+const styles = StyleSheet.create({
+  page: {
+    padding: 40,
+    fontSize: 12,
+    fontFamily: "Helvetica",
+    lineHeight: 1.6,
+    color: "#333",
+  },
+  title: {
+    fontSize: 24,
+    textAlign: "center",
+    marginBottom: 20,
+    color: "#8B4513",
+  },
+  section: {
+    marginBottom: 16,
+    paddingBottom: 8,
+    borderBottom: "1px solid #ccc",
+  },
+  heading: {
+    fontSize: 16,
+    marginBottom: 4,
+    color: "#444",
+  },
+  score: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  footer: {
+    marginTop: 40,
+    fontSize: 10,
+    textAlign: "center",
+    color: "#777",
+  },
+});
+
+interface BigFiveReportProps {
+  name: string;
+  scores: Record<string, string>;
+}
+
+const getDomainName = (domain: string): string => {
+  const map = {
+    N: "Neuroticismo",
+    E: "Extroversão",
+    O: "Abertura à Experiência",
+    A: "Agradabilidade",
+    C: "Conscienciosidade",
+  };
+  return map[domain] || domain;
+};
+
+const interpretations: Record<string, string> = {
+  N: "Representa sua estabilidade emocional e nível de reatividade.",
+  E: "Mostra seu nível de energia, sociabilidade e entusiasmo.",
+  O: "Indica criatividade, imaginação e interesse por novas ideias.",
+  A: "Refere-se à empatia, gentileza e confiança nos outros.",
+  C: "Representa sua disciplina, organização e persistência.",
+};
+
+export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.title}>Capítulo 7 – Trabalhando com Seus Desafios</Text>
+
+        <View style={styles.section}>
+          <Text>
+            Cada traço traz aprendizados em potencial. Este capítulo é um convite para olhar com gentileza para seus padrões desafiadores e transformá-los em oportunidades de crescimento.
+          </Text>
+          <Text style={styles.heading}>🧩 Padrões limitantes a observar:</Text>
+          <Text>
+            ● Alto neuroticismo pode gerar interpretações negativas sobre si e os outros.{"\n"}
+            ● Baixa abertura pode limitar suas opções por medo do novo.{"\n"}
+            ● Agradabilidade baixa pode dificultar colaborações e gerar conflitos evitáveis.
+          </Text>
+          <Text style={styles.heading}>🛠️ Estratégias de desenvolvimento:</Text>
+          <Text>
+            ● Use o autoconhecimento como mapa: observe quais situações disparam seus padrões.{"\n"}
+            ● Pratique pausas conscientes antes de reagir.{"\n"}
+            ● Invista em feedback e ajuste de rota com apoio de mentores, pares ou terapeutas.
+          </Text>
+          <Text style={styles.heading}>💬 Reframings poderosos para o seu perfil:</Text>
+          <Text>
+            ● "Sensibilidade não é fraqueza, é antena."{"\n"}
+            ● "Organização é liberdade, não rigidez."{"\n"}
+            ● "Abertura é coragem em movimento."
+          </Text>
+        </View>
+
+        <Text style={styles.footer}>
+          © {new Date().getFullYear()} Sheila Martins — Todos os direitos reservados.
+        </Text>
+      </Page>
+    </Document>
+  );
+};
