@@ -28,7 +28,7 @@ export default function FinishPage() {
       setStatus("sending");
 
       try {
-        console.log("Enviando leadId para API:", leadId); // 👈 VERIFICAÇÃO
+        console.log("Enviando leadId para API:", leadId);
 
         const res = await fetch("/api/generate-report", {
           method: "POST",
@@ -36,7 +36,10 @@ export default function FinishPage() {
           body: JSON.stringify({ leadId }),
         });
 
-        if (!res.ok) throw new Error("Erro na requisição");
+        if (!res.ok) {
+          const errorText = await res.text(); // ← Captura resposta de erro
+          throw new Error(`Erro na requisição: ${res.status} - ${errorText}`);
+        }
 
         setStatus("success");
       } catch (error) {
