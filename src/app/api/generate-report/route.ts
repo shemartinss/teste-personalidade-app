@@ -39,14 +39,27 @@ export async function POST(req: NextRequest) {
     }
 
     const scores = calculateDomainScores(answersData);
+    console.log("✔️ Scores calculados:", scores);
 
-    // Corrigido: uso de React.createElement para renderizar o componente
-    const pdfStream = await pdf(
-      React.createElement(BigFiveReport, {
-        name: leadData.name,
-        scores: scores,
-      })
-    ).toBuffer();
+    let pdfStream;
+    try {
+      pdfStream = await pdf(
+        React.createElement(BigFiveReport, {
+          name: leadData.name,
+          scores: scores,
+        })
+      ).toBuffer();
+
+      if (!pdfStream || !(pdfStream instanceof Buffer)) {
+        console.error("❌ PDF não gerado corretamente:", pdfStream);
+        return NextResponse.json({ error: "Falha ao gerar o PDF." }, { status: 500 });
+      }
+
+      console.log("✅ PDF gerado com sucesso. Tamanho:", pdfStream.length);
+    } catch (pdfError) {
+      console.error("❌ Erro ao gerar PDF:", pdfError);
+      return NextResponse.json({ error: "Erro ao gerar o PDF." }, { status: 500 });
+    }
 
     const emailTemplatePath = path.resolve(process.cwd(), "src/lib/email_body.html");
     let htmlBody = await fs.readFile(emailTemplatePath, "utf-8");
@@ -54,15 +67,21 @@ export async function POST(req: NextRequest) {
     htmlBody = htmlBody.replace(/{{ NOME_DO_USUARIO }}/g, leadData.name);
     htmlBody = htmlBody.replace(/{{ ANO_ATUAL }}/g, new Date().getFullYear().toString());
 
-    await sendReportEmail({
-      to: leadData.email,
-      from: FROM_EMAIL,
-      subject: "Seu Relatório de Personalidade Big Five Chegou!",
-      htmlBody,
-      attachmentPath: "inline",
-      attachmentName: `Relatorio_BigFive_${leadData.name.replace(/\s+/g, "_")}.pdf`,
-      buffer: pdfStream,
-    });
+    try {
+      await sendReportEmail({
+        to: leadData.email,
+        from: FROM_EMAIL,
+        subject: "Seu Relatório de Personalidade Big Five Chegou!",
+        htmlBody,
+        attachmentPath: "inline",
+        attachmentName: `Relatorio_BigFive_${leadData.name.replace(/\s+/g, "_")}.pdf`,
+        buffer: pdfStream,
+      });
+      console.log("📧 E-mail enviado com sucesso.");
+    } catch (emailError) {
+      console.error("❌ Erro ao enviar e-mail:", emailError);
+      return NextResponse.json({ error: "Erro ao enviar e-mail" }, { status: 500 });
+    }
 
     try {
       await syncActiveCampaignContact({
@@ -70,13 +89,15 @@ export async function POST(req: NextRequest) {
         firstName: leadData.name,
         phone: leadData.phone,
       });
-    } catch (error) {
-      console.error("Erro ao sincronizar com ActiveCampaign:", error);
+      console.log("🔄 Sincronização com ActiveCampaign concluída.");
+    } catch (syncError) {
+      console.error("⚠️ Erro ao sincronizar com ActiveCampaign:", syncError);
+      // Não bloqueia o sucesso geral
     }
 
     return NextResponse.json({ message: "PDF gerado e enviado com sucesso." });
   } catch (error: any) {
-    console.error("Erro na API:", error);
+    console.error("❌ Erro na API:", error);
     return NextResponse.json({ error: error.message || "Erro interno" }, { status: 500 });
   }
 }
