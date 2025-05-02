@@ -7,12 +7,14 @@ import { pdf } from "@react-pdf/renderer";
 import { BigFiveReport } from "@/components/BigFiveReport";
 import fs from "fs/promises";
 import path from "path";
+import React from "react";
 
 const FROM_EMAIL = "contato@sheilamartins.com";
 
 export async function POST(req: NextRequest) {
   try {
     const { leadId } = await req.json();
+
     if (!leadId) {
       return NextResponse.json({ error: "Lead ID is required" }, { status: 400 });
     }
@@ -38,34 +40,30 @@ export async function POST(req: NextRequest) {
 
     const scores = calculateDomainScores(answersData);
 
-    // Gera o PDF em memória
-    const pdfBuffer = await pdf(
-      <BigFiveReport name={leadData.name} scores={scores} />
+    // Corrigido: uso de React.createElement para renderizar o componente
+    const pdfStream = await pdf(
+      React.createElement(BigFiveReport, {
+        name: leadData.name,
+        scores: scores,
+      })
     ).toBuffer();
 
-    const pdfBase64 = pdfBuffer.toString("base64");
-
-    // Lê o corpo do email
     const emailTemplatePath = path.resolve(process.cwd(), "src/lib/email_body.html");
     let htmlBody = await fs.readFile(emailTemplatePath, "utf-8");
 
     htmlBody = htmlBody.replace(/{{ NOME_DO_USUARIO }}/g, leadData.name);
     htmlBody = htmlBody.replace(/{{ ANO_ATUAL }}/g, new Date().getFullYear().toString());
 
-    // Envia o email via Postmark com anexo em base64
     await sendReportEmail({
       to: leadData.email,
       from: FROM_EMAIL,
       subject: "Seu Relatório de Personalidade Big Five Chegou!",
       htmlBody,
-      attachment: {
-        Name: `Relatorio_BigFive_${leadData.name.replace(/\s+/g, "_")}.pdf`,
-        Content: pdfBase64,
-        ContentType: "application/pdf",
-      },
+      attachmentPath: "inline",
+      attachmentName: `Relatorio_BigFive_${leadData.name.replace(/\s+/g, "_")}.pdf`,
+      buffer: pdfStream,
     });
 
-    // Sincroniza com ActiveCampaign
     try {
       await syncActiveCampaignContact({
         email: leadData.email,
