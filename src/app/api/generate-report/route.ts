@@ -198,17 +198,5 @@ export async function POST(req: NextRequest) {
       },
       { status: 500 }
     );
-  } finally {
-    if (outputPdfPath) {
-      try {
-        await fs.unlink(outputPdfPath);
-        console.log(`Temporary PDF file deleted: ${outputPdfPath}`);
-      } catch (cleanupError) {
-        console.error(
-          `Error deleting temporary PDF file ${outputPdfPath}:`,
-          cleanupError
-        );
-      }
-    }
   }
 }
