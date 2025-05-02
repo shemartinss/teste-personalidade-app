@@ -304,3 +304,57 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
     </Document>
   );
 };
+{/* Capítulo 3 – Aplicações do seu perfil na carreira */}
+<Page size="A4" style={styles.page}>
+  <Text style={styles.chapterTitle}>Capítulo 3</Text>
+  <Text style={styles.heading}>Seu Perfil e Sua Carreira</Text>
+
+  <View style={styles.section}>
+    <Text style={styles.paragraph}>
+      Entender como seus traços de personalidade influenciam seu ambiente profissional pode ser o diferencial entre uma carreira satisfatória e uma rotina de frustração.
+    </Text>
+    <Text style={styles.paragraph}>
+      A seguir, você verá como seu perfil se manifesta em situações de trabalho, quais ambientes são mais adequados para o seu estilo e quais estratégias podem te ajudar a brilhar profissionalmente.
+    </Text>
+  </View>
+
+  <View style={styles.section}>
+    <Text style={styles.subheading}>🌱 Ambientes de trabalho ideais</Text>
+    <Text style={styles.paragraph}>
+      Com base nas suas respostas, você tende a se sentir mais produtiva e engajada em ambientes que valorizam:
+    </Text>
+    <Text style={styles.listItem}>• {careerRecommendations.environments[0]}</Text>
+    <Text style={styles.listItem}>• {careerRecommendations.environments[1]}</Text>
+    <Text style={styles.listItem}>• {careerRecommendations.environments[2]}</Text>
+  </View>
+
+  <View style={styles.section}>
+    <Text style={styles.subheading}>🔍 Funções alinhadas ao seu perfil</Text>
+    <Text style={styles.paragraph}>
+      Considerando seus pontos fortes, essas são áreas e funções onde seu perfil pode naturalmente se destacar:
+    </Text>
+    <Text style={styles.listItem}>• {careerRecommendations.roles[0]}</Text>
+    <Text style={styles.listItem}>• {careerRecommendations.roles[1]}</Text>
+    <Text style={styles.listItem}>• {careerRecommendations.roles[2]}</Text>
+  </View>
+
+  <View style={styles.section}>
+    <Text style={styles.subheading}>⚠️ Desafios profissionais comuns</Text>
+    <Text style={styles.paragraph}>
+      Todo perfil tem suas vulnerabilidades. Aqui estão alguns desafios que você pode enfrentar:
+    </Text>
+    <Text style={styles.listItem}>• {careerRecommendations.challenges[0]}</Text>
+    <Text style={styles.listItem}>• {careerRecommendations.challenges[1]}</Text>
+    <Text style={styles.listItem}>• {careerRecommendations.challenges[2]}</Text>
+  </View>
+
+  <View style={styles.section}>
+    <Text style={styles.subheading}>🚀 Estratégias para prosperar</Text>
+    <Text style={styles.paragraph}>
+      Para crescer profissionalmente respeitando sua autenticidade, considere:
+    </Text>
+    <Text style={styles.listItem}>• {careerRecommendations.strategies[0]}</Text>
+    <Text style={styles.listItem}>• {careerRecommendations.strategies[1]}</Text>
+    <Text style={styles.listItem}>• {careerRecommendations.strategies[2]}</Text>
+  </View>
+</Page>
