@@ -15,11 +15,11 @@ const client = SERVER_TOKEN ? new postmark.ServerClient(SERVER_TOKEN) : null;
 
 interface EmailOptions {
   to: string;
-  from: string; // Must be a registered Sender Signature in Postmark
+  from: string;
   subject: string;
   htmlBody: string;
-  attachmentPath: string;
-  attachmentName?: string;
+  attachmentName: string;
+  buffer: Buffer;
 }
 
 // Function to send email with PDF attachment via Postmark
