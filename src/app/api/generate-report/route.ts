@@ -40,23 +40,21 @@ export async function POST(req: NextRequest) {
 
     const scores = calculateDomainScores(answersData);
 
-    // 🔍 Logs de verificação de dados antes da renderização
     console.log("✔️ Nome recebido:", leadData.name);
-    console.log("✔️ Scores calculados:", scores);
+    console.log("✔️ Scores calculados:");
+    Object.entries(scores).forEach(([key, val]) => {
+      console.log(`${key}: (${typeof val})`, val);
+    });
 
-    if (!leadData.name) {
+    if (!leadData.name || typeof leadData.name !== "string") {
       return NextResponse.json({ error: "Nome do lead está vazio ou inválido." }, { status: 400 });
-    }
-
-    if (!scores || Object.keys(scores).length === 0) {
-      return NextResponse.json({ error: "Scores inválidos ou ausentes." }, { status: 500 });
     }
 
     let pdfStream;
     try {
       const element = React.createElement(BigFiveReport, {
         name: leadData.name,
-        scores: scores,
+        scores,
       });
 
       pdfStream = await pdf(element).toBuffer();
@@ -102,7 +100,6 @@ export async function POST(req: NextRequest) {
       console.log("🔄 Sincronização com ActiveCampaign concluída.");
     } catch (syncError) {
       console.error("⚠️ Erro ao sincronizar com ActiveCampaign:", syncError);
-      // Não impede a resposta de sucesso
     }
 
     return NextResponse.json({ message: "PDF gerado e enviado com sucesso." });
