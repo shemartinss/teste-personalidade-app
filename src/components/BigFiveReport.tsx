@@ -8,14 +8,13 @@ import {
 } from "@react-pdf/renderer";
 import type { DomainScores } from "@/lib/scoreCalculator";
 
-// Estilos compatíveis com react-pdf
 const styles = StyleSheet.create({
   page: {
     padding: 40,
     fontSize: 12,
     fontFamily: "Helvetica",
     lineHeight: 1.6,
-    color: "#333",
+    color: "#000",
   },
   title: {
     fontSize: 24,
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
-    borderBottomStyle: "solid",
+    borderBottomStyle: "solid", // ⚠️ permitido no react-pdf 3.3.0+
   },
   heading: {
     fontSize: 16,
@@ -69,8 +68,6 @@ const interpretations: Record<keyof DomainScores, string> = {
 export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
   const currentDate = new Date().toLocaleDateString();
 
-  const validDomains: (keyof DomainScores)[] = ["N", "E", "O", "A", "C"];
-
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -81,23 +78,21 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
 
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 2 – Seu Perfil Personalizado</Text>
-        {validDomains.map((domain) => {
-          const score = scores[domain];
-          if (typeof score !== "number") {
-            console.warn("Valor inválido para domínio:", domain, score);
-            return null;
-          }
-
+        {Object.entries(scores).map(([domain, score]) => {
+          const key = domain as keyof DomainScores;
           return (
             <View key={domain} style={styles.section}>
               <Text style={styles.heading}>
-                {domainLabels[domain]} ({domain})
+                {domainLabels[key]} ({key})
               </Text>
               <Text style={styles.score}>Pontuação: {score}</Text>
-              <Text>{interpretations[domain]}</Text>
+              <Text>{interpretations[key]}</Text>
             </View>
           );
         })}
+        <Text style={styles.footer}>
+          © {new Date().getFullYear()} Sheila Martins — Todos os direitos reservados.
+        </Text>
       </Page>
     </Document>
   );
