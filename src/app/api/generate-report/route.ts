@@ -39,10 +39,11 @@ export async function POST(req: NextRequest) {
     }
 
     const scores = calculateDomainScores(answersData);
+    const plainScores = JSON.parse(JSON.stringify(scores)); // ✅ conversão para garantir objeto plano
 
     console.log("✔️ Nome recebido:", leadData.name);
     console.log("✔️ Scores calculados:");
-    Object.entries(scores).forEach(([key, val]) => {
+    Object.entries(plainScores).forEach(([key, val]) => {
       console.log(`${key}: (${typeof val})`, val);
     });
 
@@ -54,7 +55,7 @@ export async function POST(req: NextRequest) {
     try {
       const element = React.createElement(BigFiveReport, {
         name: leadData.name,
-        scores,
+        scores: plainScores,
       });
 
       pdfStream = await pdf(element).toBuffer();
