@@ -81,6 +81,17 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
         <Text style={styles.title}>Capítulo 2 – Seu Perfil Personalizado</Text>
         {Object.entries(scores).map(([domain, score]) => {
           const key = domain as keyof DomainScores;
+
+          if (
+            !["N", "E", "O", "A", "C"].includes(domain) ||
+            typeof score !== "number" ||
+            !domainLabels[key] ||
+            !interpretations[key]
+          ) {
+            console.warn("Domínio inválido ou dados ausentes:", { domain, score });
+            return null;
+          }
+
           return (
             <View key={domain} style={styles.section}>
               <Text style={styles.heading}>
