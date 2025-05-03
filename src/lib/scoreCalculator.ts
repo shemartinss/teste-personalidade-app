@@ -1,4 +1,4 @@
-export interface Answer {
+interface Answer {
   question_id: string;
   score: number;
   domain: string;
@@ -15,27 +15,33 @@ export interface DomainScores {
   C: number; // Conscientiousness
 }
 
+// Função principal para calcular os escores do Big Five
 export function calculateDomainScores(answers: Answer[]): DomainScores {
   const scores: DomainScores = { N: 0, E: 0, O: 0, A: 0, C: 0 };
-  const counts: Record<keyof DomainScores, number> = { N: 0, E: 0, O: 0, A: 0, C: 0 };
+  const counts: { [key in keyof DomainScores]: number } = {
+    N: 0,
+    E: 0,
+    O: 0,
+    A: 0,
+    C: 0,
+  };
 
-  answers.forEach((answer) => {
+  for (const answer of answers) {
     const domain = answer.domain as keyof DomainScores;
 
     if (scores.hasOwnProperty(domain)) {
-      const isNegative = answer.keyed === "-";
-      const adjustedScore = isNegative ? 6 - answer.score : answer.score;
+      const raw = answer.score;
+      const adjusted = answer.keyed === '-' ? 6 - raw : raw;
 
-      // ✅ Garante soma numérica
-      scores[domain] += Number(adjustedScore);
+      scores[domain] += adjusted;
       counts[domain]++;
     }
-  });
+  }
 
-  // ✅ Log detalhado e seguro
-  console.log("✔️ Domain Scores Calculated:");
-  Object.entries(scores).forEach(([key, value]) => {
-    console.log(`${key}:`, value, `(${typeof value})`);
+  console.log("\u2714\ufe0f Domain Scores Calculated:");
+  (Object.keys(scores) as (keyof DomainScores)[]).forEach((key) => {
+    const val = scores[key];
+    console.log(`${key}: ${val} (${typeof val})`);
   });
 
   return scores;
