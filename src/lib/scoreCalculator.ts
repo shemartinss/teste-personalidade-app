@@ -1,3 +1,5 @@
+// scoreCalculator.ts
+
 interface Answer {
   question_id: string;
   score: number;
@@ -8,17 +10,15 @@ interface Answer {
 }
 
 export interface DomainScores {
-  N: number; // Neuroticism
-  E: number; // Extraversion
-  O: number; // Openness
-  A: number; // Agreeableness
-  C: number; // Conscientiousness
+  N: number;
+  E: number;
+  O: number;
+  A: number;
+  C: number;
 }
 
-// Função principal para calcular os escores do Big Five
 export function calculateDomainScores(answers: Answer[]): DomainScores {
-  const scores: DomainScores = { N: 0, E: 0, O: 0, A: 0, C: 0 };
-  const counts: { [key in keyof DomainScores]: number } = {
+  const scores: DomainScores = {
     N: 0,
     E: 0,
     O: 0,
@@ -28,21 +28,21 @@ export function calculateDomainScores(answers: Answer[]): DomainScores {
 
   for (const answer of answers) {
     const domain = answer.domain as keyof DomainScores;
+    const score = Number(answer.score); // Garante que seja número
+    const adjusted = answer.keyed === "-" ? 6 - score : score;
 
-    if (scores.hasOwnProperty(domain)) {
-      const raw = answer.score;
-      const adjusted = answer.keyed === '-' ? 6 - raw : raw;
-
+    if (Object.prototype.hasOwnProperty.call(scores, domain)) {
       scores[domain] += adjusted;
-      counts[domain]++;
+    } else {
+      console.warn("❗ Domínio inválido:", domain);
     }
   }
 
-  console.log("\u2714\ufe0f Domain Scores Calculated:");
-  (Object.keys(scores) as (keyof DomainScores)[]).forEach((key) => {
+  console.log("✔️ Domain Scores Calculated:");
+  for (const key of Object.keys(scores) as (keyof DomainScores)[]) {
     const val = scores[key];
     console.log(`${key}: ${val} (${typeof val})`);
-  });
+  }
 
   return scores;
 }
