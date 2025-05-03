@@ -69,6 +69,8 @@ const interpretations: Record<keyof DomainScores, string> = {
 export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
   const currentDate = new Date().toLocaleDateString();
 
+  const validDomains: (keyof DomainScores)[] = ["N", "E", "O", "A", "C"];
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -79,26 +81,20 @@ export const BigFiveReport = ({ name, scores }: BigFiveReportProps) => {
 
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Capítulo 2 – Seu Perfil Personalizado</Text>
-        {Object.entries(scores).map(([domain, score]) => {
-          const key = domain as keyof DomainScores;
-
-          if (
-            !["N", "E", "O", "A", "C"].includes(domain) ||
-            typeof score !== "number" ||
-            !domainLabels[key] ||
-            !interpretations[key]
-          ) {
-            console.warn("Domínio inválido ou dados ausentes:", { domain, score });
+        {validDomains.map((domain) => {
+          const score = scores[domain];
+          if (typeof score !== "number") {
+            console.warn("Valor inválido para domínio:", domain, score);
             return null;
           }
 
           return (
             <View key={domain} style={styles.section}>
               <Text style={styles.heading}>
-                {domainLabels[key]} ({key})
+                {domainLabels[domain]} ({domain})
               </Text>
               <Text style={styles.score}>Pontuação: {score}</Text>
-              <Text>{interpretations[key]}</Text>
+              <Text>{interpretations[domain]}</Text>
             </View>
           );
         })}
